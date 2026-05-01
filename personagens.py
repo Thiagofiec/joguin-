@@ -4,6 +4,7 @@ from itens import listaArmas
 from itens import listaArmaduras
 
 class personagemBase:
+    nome = str
     vidaMax = int
     vida = int
     resis = int
@@ -14,6 +15,7 @@ class personagemBase:
 
     def levarDano(self, quant):
         self.vida -= quant
+        print(f"{self.nome} levou {quant} de dano")
         if self.vida <= 0:
             return False #morto
         return True #vivo
@@ -30,6 +32,7 @@ class Heroi(personagemBase):
         self.agili = 3
         self.sabed = 3
         self.habilidades = []
+        self.resis = [0,0,0,0,0,0,0,0]
         self.inventario = []
         self.arma = listaArmas[0]
         self.inventario.append(listaArmas[0])
@@ -58,6 +61,8 @@ class Heroi(personagemBase):
 
         self.vida = self.vidaMax
 
+#teste
+
     def mostrarPersonagem(self):
         print(f'nome: {self.nome}\n'
               f'Vida: {self.vida}/{self.vidaMax}\n'
@@ -69,7 +74,25 @@ class Heroi(personagemBase):
         for item in self.inventario:
             print(f'>{item['nome']}')
 
+#vida
 
+    def levarDanoHeroi(self, quant, tipo):
+        if self.levarDano(quant -self.calcularRes(tipo)):
+            #adicionar print diferente dependendo da porcentagem da vida 
+            return True
+        else:
+            print("você perde sua força e colapsa")
+            return False
+        
+    def calcularRes(self, tipo):
+        if tipo == 8:
+            return 0
+        
+        if self.armadura is None:
+            return self.resis[tipo] 
+        
+        return self.resis[tipo] + self.armadura['res'][tipo]
+#inventario
 
     def adiquirirItem(self, cat, id):
         match cat:
@@ -77,14 +100,32 @@ class Heroi(personagemBase):
                 for item in listaItens:
                     if id == item["id"]:
                         self.inventario.append(item)
+                        return
+                print("nenhum item valido com essa combinação de categoria e id")
+                print("itens validos:")
+                for item in listaItens:
+                    print(f"id:{item['id']} - nome:{item['nome']}")
+                input()
             case 1:
                 for arma in listaArmas:
                     if id == arma["id"]:
                         self.inventario.append(arma)
+                        return
+                print("nenhum item valido com essa combinação de categoria e id")
+                print("itens validos:")
+                for arma in listaArmas:
+                    print(f"id:{arma['id']} - nome:{arma['nome']}")
+                input()
             case 2:
                 for armadura in listaArmaduras:
                     if id == armadura["id"]:
                         self.inventario.append(armadura)
+                        return
+                print("nenhum item valido com essa combinação de categoria e id")
+                print("itens validos:")
+                for armadura in listaArmaduras:
+                    print(f"id:{armadura['id']} - nome:{armadura['nome']}")
+                input()
 
     def menuItem(self):
         while True:
@@ -196,7 +237,7 @@ class Heroi(personagemBase):
                                 match i:
                                     case 1:
                                         print(f'{item["nome"]} desiquipado')
-                                        self.arma = "desarmado"
+                                        self.arma = None
                                     case 2:
                                         break
 
@@ -248,7 +289,7 @@ class Heroi(personagemBase):
                                 match i:
                                     case 1:
                                         print(f'{item["nome"]} desiquipado')
-                                        self.armadura = "desarmado"
+                                        self.armadura = None
                                     case 2:
                                         break
 
@@ -276,7 +317,7 @@ class Heroi(personagemBase):
                                         self.armadura = item
                                     case 2:
                                         print(f'{item["nome"]} descartado')
-                                        self.inventario.remove(itemPos - 1)
+                                        self.inventario.pop(itemPos - 1)
                                     case 3:
                                         break
 
