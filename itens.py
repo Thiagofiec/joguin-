@@ -97,28 +97,18 @@ listaArmaduras = [
         'id': 0,
         'cat': 2,
         'nome': "camisa",
-        "res0": 0,
-        "res1": 0,
-        "res2": 0,
-        "res3": 0,
-        "res4": 0,
-        "res5": 0,
-        "res6": 1,
-        "res7": 0,
+        'res': [0,0,0,0,0,0,1,0],
         'desc': "roupa simples de pano mediocre"
     },
-{
+    {
         'id': 1,
         'cat': 2,
         'nome': "armadura enferujada",
-        "res0": 1,
-        "res1": 3,
-        "res2": 1,
-        "res3": -2,
-        "res4": -5,
-        "res5": 0,
-        "res6": -2,
-        "res7": 0,
+        'res': [1,3,1,-2,-5,0,-2,0],
         'desc': "uma armadura chegando a seu limite,"
     }
 ]
+
+# classes para itens
+
+#class item
