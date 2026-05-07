@@ -111,4 +111,19 @@ listaArmaduras = [
 
 # classes para itens
 
-#class item
+class item:
+    nome = str
+    desc = str
+    cat = int
+
+class Itemusavel(item):
+
+    #adicionar contador de id que reseta entre runs - diferente do id da biblioteca
+
+    def __init__(self, nome, desc, cat, tipo, valor, add = None):
+        self.nome = nome
+        self.desc = desc
+        self.cat = cat
+        self.tipo = tipo
+        self.add = add
+        self.valor = valor
