@@ -1,5 +1,8 @@
 # cat = categoria, 0 = item, 1 = arma, 2 = armadura para diferenciar dentro do inventario do personagem
 
+# para alvo, 0 = sem alvo,1= voce, 2 = inimigo 
+# para tipo, 0= dano, 1= cura, 3= condição, 4= casos especiais
+
 listaItens = [
     {
         'id': 0,
@@ -8,17 +11,21 @@ listaItens = [
         'usavel': True,
         'tipo': 1,
         'add': None,
+        'alvo': 1,
         'valor': 20,
+        'valorAdd': None,
         'desc': "pequena frasco de liquido vermelho, restaura vitalidade"
     },
 {
         'id': 0,
         'cat': 0,
-        'nome': "poção de cura menor",
+        'nome': "poção de acido menor",
         'usavel': True,
         'tipo': 1,
         'add': None,
+        'alvo': 2,
         'valor': 20,
+        'valorAdd': None,
         'desc': "pequena frasco de liquido vermelho, restaura vitalidade"
     },
 {
@@ -28,7 +35,9 @@ listaItens = [
         'usavel': True,
         'tipo': 1,
         'add': None,
+        'alvo': 1,
         'valor': 50,
+        'valorAdd': None,
         'desc': "frasco de liquido vermelho, restaura vitalidade"
     },
 {
@@ -38,7 +47,9 @@ listaItens = [
         'usavel': True,
         'tipo': 1,
         'add': None,
+        'alvo': 1,
         'valor': 100,
+        'valorAdd': None,
         'desc': "grande frasco de liquido vermelho, restaura vitalidade"
     },
 {
@@ -48,7 +59,9 @@ listaItens = [
         'usavel': False,
         'tipo': 4,
         'add': None,
+        'alvo': 0,
         'valor': None,
+        'valorAdd': None,
         'desc': "pequena frasco de liquido vermelho, restaura vitalidade"
     },
 ]
@@ -111,4 +124,47 @@ listaArmaduras = [
 
 # classes para itens
 
-#class item
+class item:
+    nome = str
+    desc = str
+    cat = int
+    contId = 0
+
+    def __init__(self,nome:str,desc:str,cat:int):
+        self.nome = nome
+        self.desc = desc
+        self.cat = cat
+        self.id = self.contId
+        self.contId += 1
+
+    def resetarId():
+        contId = 0
+
+
+class itemUsavel(item):
+
+    def __init__(self, nome, desc, cat,usavel:bool,tipo:int,add:int|None,alvo:int,valor:int,valorAdd:int):
+        super().__init__(nome, desc, cat)
+        self.usavel = usavel
+        self.tipo = tipo
+        self.add = add
+        self.alvo = alvo
+        self.valor = valor
+        self.valorAdd = valorAdd
+
+        
+
+class itemArma(item):
+
+    def __init__(self, nome, desc, cat,dano:int,hit:int,tipo:int):
+        super().__init__(nome, desc, cat)
+        self.dano = dano
+        self.hit = hit
+        self = tipo
+
+class itemArmadura(item):
+
+    def __init__(self, nome, desc, cat,res:list):
+        super().__init__(nome, desc, cat)
+        self.res = res
+
