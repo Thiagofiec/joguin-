@@ -26,6 +26,17 @@ class personagemBase:
             return False #morto
         return True #vivo
 
+    def curar(self,quant):
+        self.vida += quant
+        if self.vida > self.vidaMax:
+            overheal = self.vida - self.vidaMax
+            quantReal = quant - overheal
+            self.vida = self.vidaMax
+            print(f"{self.nome} curou {quantReal} pontos de vida")
+        else:
+            print(f'{self.nome} curou {quant} pontos de vida')
+
+
 
 
 class Heroi(personagemBase):
@@ -107,7 +118,7 @@ class Heroi(personagemBase):
             case 0:
                 for novoItem in listaItens:
                     if id == novoItem["id"]:
-                        addItem = itemUsavel(novoItem["nome"],novoItem["desc"],novoItem["cat"],novoItem["usavel"],novoItem["tipo"],novoItem["add"],novoItem["alvo"], novoItem["valor"],novoItem["valorAdd"] )
+                        addItem = itemUsavel(novoItem["nome"],novoItem["desc"],novoItem["cat"],novoItem["usavel"],novoItem["tipo"],novoItem["tipoDano"],novoItem["add"],novoItem["alvo"], novoItem["valor"],novoItem["valorAdd"] )
                         self.inventario.append(addItem)
                         return
                 print("nenhum item valido com essa combinação de categoria e id")
@@ -175,7 +186,7 @@ class Heroi(personagemBase):
 
                     match item.cat:
                         case 0:
-                            if item.usavel == True:
+                            if item.usavel == True & item.alvo == 1 :
                                 while True:
                                     try:
                                         i = int(input("1-usar\n"
@@ -196,6 +207,7 @@ class Heroi(personagemBase):
                                 match i:
                                     case 1:
                                         print(f'{item.nome} usado')
+                                        item.usarItem(self)
                                         self.inventario.pop(itemPos -1)
                                     case 2:
                                         print(f'{item.nome} descartado')

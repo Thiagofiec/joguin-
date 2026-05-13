@@ -10,20 +10,9 @@ listaItens = [
         'nome': "poção de cura menor",
         'usavel': True,
         'tipo': 1,
+        'tipoDano': None,
         'add': None,
         'alvo': 1,
-        'valor': 20,
-        'valorAdd': None,
-        'desc': "pequena frasco de liquido vermelho, restaura vitalidade"
-    },
-{
-        'id': 0,
-        'cat': 0,
-        'nome': "poção de acido menor",
-        'usavel': True,
-        'tipo': 1,
-        'add': None,
-        'alvo': 2,
         'valor': 20,
         'valorAdd': None,
         'desc': "pequena frasco de liquido vermelho, restaura vitalidade"
@@ -31,9 +20,23 @@ listaItens = [
 {
         'id': 1,
         'cat': 0,
+        'nome': "frasco de acido menor",
+        'usavel': True,
+        'tipo': 2,
+        'tipoDano': 8,
+        'add': None,
+        'alvo': 2,
+        'valor': 20,
+        'valorAdd': None,
+        'desc': "pequena frasco de liquido vermelho, restaura vitalidade"
+    },
+{
+        'id': 2,
+        'cat': 0,
         'nome': "poção de cura",
         'usavel': True,
         'tipo': 1,
+        'tipoDano': None,
         'add': None,
         'alvo': 1,
         'valor': 50,
@@ -41,11 +44,12 @@ listaItens = [
         'desc': "frasco de liquido vermelho, restaura vitalidade"
     },
 {
-        'id': 2,
+        'id': 3,
         'cat': 0,
         'nome': "poção de cura maior",
         'usavel': True,
         'tipo': 1,
+        'tipoDano': None,
         'add': None,
         'alvo': 1,
         'valor': 100,
@@ -53,17 +57,44 @@ listaItens = [
         'desc': "grande frasco de liquido vermelho, restaura vitalidade"
     },
 {
-        'id': 3,
+        'id': 4,
         'cat': 0,
         'nome': "chave antiga",
         'usavel': False,
         'tipo': 4,
+        'tipoDano': None,
         'add': None,
         'alvo': 0,
         'valor': None,
         'valorAdd': None,
         'desc': "pequena frasco de liquido vermelho, restaura vitalidade"
     },
+{
+        'id': 5,
+        'cat': 0,
+        'nome': "poção da meia morte ",
+        'usavel': True,
+        'tipo': 0,
+        'tipoDano': 7,
+        'add': None,
+        'alvo': 1,
+        'valor': 50,
+        'valorAdd': None,
+        'desc': "pequena frasco de liquido escuro, drena vitalidade"
+    },
+{
+        'id': 6,
+        'cat': 0,
+        'nome': "poção da morte ",
+        'usavel': True,
+        'tipo': 0,
+        'tipoDano': 7,
+        'add': None,
+        'alvo': 1,
+        'valor': 500,
+        'valorAdd': None,
+        'desc': "Não beba isso"
+    }
 ]
 # tipos de dano
 # 0 - impacto
@@ -124,24 +155,11 @@ listaArmaduras = [
 
 # classes para itens
 
-class item:
-    nome = str
-    desc = str
-    cat = int
-<<<<<<< main
 
-class Itemusavel(item):
+class Item:
 
     #adicionar contador de id que reseta entre runs - diferente do id da biblioteca
 
-    def __init__(self, nome, desc, cat, tipo, valor, add = None):
-        self.nome = nome
-        self.desc = desc
-        self.cat = cat
-        self.tipo = tipo
-        self.add = add
-        self.valor = valor
-=======
     contId = 0
 
     def __init__(self,nome:str,desc:str,cat:int):
@@ -151,35 +169,64 @@ class Itemusavel(item):
         self.id = self.contId
         self.contId += 1
 
-    def resetarId():
+    def resetarId(self):
         contId = 0
 
 
-class itemUsavel(item):
+class itemUsavel(Item):
 
-    def __init__(self, nome, desc, cat,usavel:bool,tipo:int,add:int|None,alvo:int,valor:int,valorAdd:int):
+    def __init__(self, nome, desc, cat,usavel:bool,tipo:int,tipoDano:int|None,add:int|None,alvo:int,valor:int,valorAdd:int):
         super().__init__(nome, desc, cat)
         self.usavel = usavel
         self.tipo = tipo
+        self.tipoDano = tipoDano
         self.add = add
         self.alvo = alvo
         self.valor = valor
         self.valorAdd = valorAdd
 
-        
+    def usarItem(self, alvo):
+        if not self.usavel:
+            print("item não é usavel")
+            return
 
-class itemArma(item):
+        match self.tipo:
+            case 0:
+                self.__danificar(alvo)
+            case 1:
+                self.__curar(alvo)
+            case 2:
+                print("nao implementado")
+            case 3:
+                print("Nao implementado")
+
+
+    def __danificar(self, alvo):
+        if hasattr(alvo, "levarDanoHeroi") and callable(alvo.levarDanoHeroi):
+            alvo.levarDanoHeroi(self.valor, self.tipoDano)
+            return
+        else:
+            if hasattr(alvo, "levarDano") and callable(alvo.levarDano):
+                alvo.levarDano(self.valor)
+                return
+        return
+
+    def __curar(self, alvo):
+        alvo.curar(self.valor)
+
+
+
+class itemArma(Item):
 
     def __init__(self, nome, desc, cat,dano:int,hit:int,tipo:int):
         super().__init__(nome, desc, cat)
         self.dano = dano
         self.hit = hit
-        self = tipo
+        self.tipo = tipo
 
-class itemArmadura(item):
+class itemArmadura(Item):
 
     def __init__(self, nome, desc, cat,res:list):
         super().__init__(nome, desc, cat)
         self.res = res
 
->>>>>>> main
