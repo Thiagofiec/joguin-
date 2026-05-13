@@ -2,6 +2,9 @@ from habilidades import listaHabilidades
 from itens import listaItens
 from itens import listaArmas
 from itens import listaArmaduras
+from itens import itemUsavel
+from itens import itemArma
+from itens import itemArmadura
 
 class personagemBase:
     nome = str
@@ -14,8 +17,11 @@ class personagemBase:
 
 
     def levarDano(self, quant):
-        self.vida -= quant
-        print(f"{self.nome} levou {quant} de dano")
+        if quant > 0:
+            self.vida -= quant
+            print(f"{self.nome} levou {quant} de dano")
+        else:
+            print(f'golpe incapaiz de danificar {self.nome}')
         if self.vida <= 0:
             return False #morto
         return True #vivo
@@ -34,23 +40,23 @@ class Heroi(personagemBase):
         self.habilidades = []
         self.resis = [0,0,0,0,0,0,0,0]
         self.inventario = []
-        self.arma = listaArmas[0]
-        self.inventario.append(listaArmas[0])
-        self.armadura = listaArmaduras[0]
-        self.inventario.append(listaArmaduras[0])
+        self.adiquirirItem(1,0)
+        self.adiquirirItem(2,0)
+        self.arma = self.inventario[0]
+        self.armadura = self.inventario[1]        
+        
 
         match presente:
             case 1:
                 self.forca += 6
             case 2:
                 self.vidaMax += 30
-                self.resis += 3
+                self.resis[0:2] = [1,1,1]
             case 3:
                 self.sabed += 10
             case 4:
                 self.forca += 2
                 self.vidaMax += 10
-                self.resis += 1
                 self.sabed += 3
 
         match habilidade:
@@ -66,13 +72,15 @@ class Heroi(personagemBase):
     def mostrarPersonagem(self):
         print(f'nome: {self.nome}\n'
               f'Vida: {self.vida}/{self.vidaMax}\n'
-              f'arma: {self.arma['nome']}\n'
+              f'arma: {self.arma.nome}\n'
+              f'armadura: {self.armadura}\n'
+              f'resistencias: {self.resis}\n'
               f'habilidades:')
         for habilidade in self.habilidades:
             print(f'>{habilidade}')
         print('inventario:')
         for item in self.inventario:
-            print(f'>{item['nome']}')
+            print(f'>{item.nome}')
 
 #vida
 
@@ -91,15 +99,16 @@ class Heroi(personagemBase):
         if self.armadura is None:
             return self.resis[tipo] 
         
-        return self.resis[tipo] + self.armadura['res'][tipo]
+        return self.resis[tipo] + self.armadura.res[tipo]
 #inventario
 
     def adiquirirItem(self, cat, id):
         match cat:
             case 0:
-                for item in listaItens:
-                    if id == item["id"]:
-                        self.inventario.append(item)
+                for novoItem in listaItens:
+                    if id == novoItem["id"]:
+                        addItem = itemUsavel(novoItem["nome"],novoItem["desc"],novoItem["cat"],novoItem["usavel"],novoItem["tipo"],novoItem["add"],novoItem["alvo"], novoItem["valor"],novoItem["valorAdd"] )
+                        self.inventario.append(addItem)
                         return
                 print("nenhum item valido com essa combinação de categoria e id")
                 print("itens validos:")
@@ -107,9 +116,10 @@ class Heroi(personagemBase):
                     print(f"id:{item['id']} - nome:{item['nome']}")
                 input()
             case 1:
-                for arma in listaArmas:
-                    if id == arma["id"]:
-                        self.inventario.append(arma)
+                for novaArma in listaArmas:
+                    if id == novaArma["id"]:
+                        addArma = itemArma(novaArma["nome"],novaArma["desc"],novaArma["cat"],novaArma["dano"],novaArma["hit"],novaArma["tipo"])
+                        self.inventario.append(addArma)
                         return
                 print("nenhum item valido com essa combinação de categoria e id")
                 print("itens validos:")
@@ -117,9 +127,10 @@ class Heroi(personagemBase):
                     print(f"id:{arma['id']} - nome:{arma['nome']}")
                 input()
             case 2:
-                for armadura in listaArmaduras:
-                    if id == armadura["id"]:
-                        self.inventario.append(armadura)
+                for novaArmadura in listaArmaduras:
+                    if id == novaArmadura["id"]:
+                        addArmadura = itemArmadura(novaArmadura["nome"],novaArmadura["desc"],novaArmadura["cat"], novaArmadura["res"])
+                        self.inventario.append(addArmadura)
                         return
                 print("nenhum item valido com essa combinação de categoria e id")
                 print("itens validos:")
@@ -131,11 +142,11 @@ class Heroi(personagemBase):
         while True:
             for i, item in enumerate(self.inventario):
                 if i + 1 == len(self.inventario):
-                    print(f'{i + 1}-{item["nome"]}')
+                    print(f'{i + 1}-{item.nome}')
                 elif (i + 1) % 3 == 0:
-                    print(f'{i + 1}-{item["nome"]}')
+                    print(f'{i + 1}-{item.nome}')
                 else:
-                    print(f'{i + 1}-{item["nome"]}', end=" | " )
+                    print(f'{i + 1}-{item.nome}', end=" | " )
 
             print("0 - sair")
 
@@ -159,12 +170,12 @@ class Heroi(personagemBase):
 
             for i, item in enumerate(self.inventario):
                 if i + 1 == itemPos:
-                    print(item['nome'])
-                    print(item['desc'])
+                    print(item.nome)
+                    print(item.desc)
 
-                    match item['cat']:
+                    match item.cat:
                         case 0:
-                            if item['usavel'] == True:
+                            if item.usavel == True:
                                 while True:
                                     try:
                                         i = int(input("1-usar\n"
@@ -184,10 +195,10 @@ class Heroi(personagemBase):
 
                                 match i:
                                     case 1:
-                                        print(f'{item["nome"]} usado')
+                                        print(f'{item.nome} usado')
                                         self.inventario.pop(itemPos -1)
                                     case 2:
-                                        print(f'{item["nome"]} descartado')
+                                        print(f'{item.nome} descartado')
                                         self.inventario.pop(itemPos - 1)
                                     case 3:
                                         return
@@ -210,7 +221,7 @@ class Heroi(personagemBase):
 
                                 match i:
                                     case 1:
-                                        print(f'{item["nome"]} descartado')
+                                        print(f'{item.nome} descartado')
                                         self.inventario.pop(itemPos - 1)
                                     case 2:
                                         return
@@ -236,7 +247,7 @@ class Heroi(personagemBase):
 
                                 match i:
                                     case 1:
-                                        print(f'{item["nome"]} desiquipado')
+                                        print(f'{item.nome} desiquipado')
                                         self.arma = None
                                     case 2:
                                         break
@@ -261,10 +272,10 @@ class Heroi(personagemBase):
 
                                 match i:
                                     case 1:
-                                        print(f'{item["nome"]} equipado')
+                                        print(f'{item.nome} equipado')
                                         self.arma = item
                                     case 2:
-                                        print(f'{item["nome"]} descartado')
+                                        print(f'{item.nome} descartado')
                                         self.inventario.pop(itemPos - 1)
                                     case 3:
                                         break
@@ -288,7 +299,7 @@ class Heroi(personagemBase):
 
                                 match i:
                                     case 1:
-                                        print(f'{item["nome"]} desiquipado')
+                                        print(f'{item.nome} desiquipado')
                                         self.armadura = None
                                     case 2:
                                         break
@@ -313,10 +324,10 @@ class Heroi(personagemBase):
 
                                 match i:
                                     case 1:
-                                        print(f'{item["nome"]} equipado')
+                                        print(f'{item.nome} equipado')
                                         self.armadura = item
                                     case 2:
-                                        print(f'{item["nome"]} descartado')
+                                        print(f'{item.nome} descartado')
                                         self.inventario.pop(itemPos - 1)
                                     case 3:
                                         break
