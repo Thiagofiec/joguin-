@@ -1,5 +1,6 @@
 from operator import truediv
 import personagens
+import luta
 
 
 
@@ -71,13 +72,14 @@ while True:
                                     "2- adicionar item\n"
                                     "3- manejar inventario\n"
                                     "4- levar dano\n"
-                                    "5- sair\n>"
+                                    "5- simular luta\n"
+                                    "6- sair\n>"
                                     ))
             except ValueError:
                 print('Isso não é uma opção')
                 print()
             else:
-                if 1 <= opcao <= 5:
+                if 1 <= opcao <= 6:
                     break
                 else:
                     print('Isso não é uma opção')
@@ -135,6 +137,18 @@ while True:
                 else: 
                     break
             case 5:
+                numero = int(input("Quantos inimigos voce ira enfrentar?\n>"))
+                inimigos = []
+
+                while numero > 0:
+                    idIni = int(input("id do inimigo \n>"))
+                    newIni = personagens.inimigo(idIni)
+                    inimigos.append(newIni)
+                    numero -= 1
+
+                luta.batalha(personagem,[],inimigos)
+            
+            case 6:
                 print("tchau tchau")
                 break
         

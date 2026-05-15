@@ -199,11 +199,21 @@ class itemUsavel(Item):
                 print("nao implementado")
             case 3:
                 print("Nao implementado")
+        if self.add:
+            match self.add:
+                case 0:
+                    self.__danificar(alvo)
+                case 1:
+                    self.__curar(alvo)
+                case 2:
+                    print("nao implementado")
+                case 3:
+                    print("Nao implementado")
 
 
     def __danificar(self, alvo):
-        if hasattr(alvo, "levarDanoHeroi") and callable(alvo.levarDanoHeroi):
-            alvo.levarDanoHeroi(self.valor, self.tipoDano)
+        if hasattr(alvo, "levarDanoRes") and callable(alvo.levarDanoRes):
+            alvo.levarDanoRes(self.valor, self.tipoDano)
             return
         else:
             if hasattr(alvo, "levarDano") and callable(alvo.levarDano):

@@ -5,6 +5,7 @@ from itens import listaArmaduras
 from itens import itemUsavel
 from itens import itemArma
 from itens import itemArmadura
+from listaPersonagens import listaInimigos
 
 class personagemBase:
     nome = str
@@ -95,7 +96,7 @@ class Heroi(personagemBase):
 
 #vida
 
-    def levarDanoHeroi(self, quant, tipo):
+    def levarDanoRes(self, quant, tipo):
         if self.levarDano(quant -self.calcularRes(tipo)):
             #adicionar print diferente dependendo da porcentagem da vida 
             return True
@@ -344,6 +345,41 @@ class Heroi(personagemBase):
                                     case 3:
                                         break
 
+class aliado(personagemBase):
+    a= 1
+
+class inimigo(personagemBase):
+
+    def __init__(self,id:int):
+        #adicionar ia dps se eu quiser
+        for i, ini in enumerate(listaInimigos):
+            if ini["id"] == id:
+                self.nome = ini["nome"] 
+                self.vida = self.vidaMax = ini["vida"]
+                self.resis = ini["resis"]
+                self.forca = ini["forca"]
+                self.agili = ini["agili"]
+                self.sabed = ini["sabed"]
+                self.habilidades = ini["habilidades"]
+                self.drops = ini["drops"] 
+            
+        
+    
+    def levarDanoRes(self, quant,tipo):
+        if self.levarDano(quant - self.calcularRes[tipo]):
+            return True
+        else:
+            return False
+
+    def calcularRes(self, tipo):
+        if tipo == 8:
+            return 0
+        return self.resis[tipo]
+    
+
+
+    
+        
 
 
 
