@@ -1,5 +1,9 @@
 #inimigos 
 
+#ia: 
+# 0 = aleatoria
+# 1 = agressivo, sempre faz o ataque que deixa um inimigo com menos vida 
+
 listaInimigos = [
     {
         "id": 0,
@@ -10,7 +14,8 @@ listaInimigos = [
         "agili": 5,
         "sabed": 8,
         "habilidades": [2,3], #id das habilidades
-        "drops": [{0,4},{2,4}] #cat e id
+        "drops": [{0,4},{2,4}], #cat e id
+        "ia": 1
     },
     {
         "id": 1,
@@ -21,6 +26,7 @@ listaInimigos = [
         "agili": 1,
         "sabed": 1,
         "habilidades": [0,5], #id das habilidades
-        "drops": [{0,4},{2,4}]
+        "drops": [{0,4},{2,4}],
+        "ia": 0
     }
 ]

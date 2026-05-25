@@ -15,6 +15,7 @@ class personagemBase:
     forca = int
     agili = int
     sabed = int
+    vivo = bool 
 
 
     def levarDano(self, quant):
@@ -24,8 +25,7 @@ class personagemBase:
         else:
             print(f'golpe incapaiz de danificar {self.nome}')
         if self.vida <= 0:
-            return False #morto
-        return True #vivo
+            self.vivo = False
 
     def curar(self,quant):
         self.vida += quant
@@ -49,6 +49,7 @@ class Heroi(personagemBase):
         self.resis = 3
         self.agili = 3
         self.sabed = 3
+        self.vivo = True
         self.habilidades = []
         self.resis = [0,0,0,0,0,0,0,0]
         self.inventario = []
@@ -97,12 +98,10 @@ class Heroi(personagemBase):
 #vida
 
     def levarDanoRes(self, quant, tipo):
-        if self.levarDano(quant -self.calcularRes(tipo)):
+        self.levarDano(quant -self.calcularRes(tipo))
             #adicionar print diferente dependendo da porcentagem da vida 
-            return True
-        else:
-            print("você perde sua força e colapsa")
-            return False
+        if self.vivo == False:
+            print("você perde sua energia e colapsa")
         
     def calcularRes(self, tipo):
         if tipo == 8:
@@ -361,15 +360,16 @@ class inimigo(personagemBase):
                 self.agili = ini["agili"]
                 self.sabed = ini["sabed"]
                 self.habilidades = ini["habilidades"]
-                self.drops = ini["drops"] 
+                self.drops = ini["drops"]
+                self.ia = ini["ia"] 
+                self.vivo = True
             
         
     
     def levarDanoRes(self, quant,tipo):
-        if self.levarDano(quant - self.calcularRes[tipo]):
-            return True
-        else:
-            return False
+        self.levarDano(quant - self.calcularRes[tipo])
+        if self.vivo == False:
+            print(f'{self.nome} foi morto')
 
     def calcularRes(self, tipo):
         if tipo == 8:
