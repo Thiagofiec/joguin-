@@ -24,7 +24,19 @@ def rolarIniciativa(todos:list):
 def turnoInimigo(perso,todos):
     match perso.ia:
         case 0:
+            #ataca alvo aleatorio
             alvos = todos(filter(isAliado))
+
+            alvo = random.randint(0, len(alvos) -1)
+
+            alvos[alvo].levarDanoRes
+        case 1:
+            #ataca alvo que vai ficar com a menor vida 
+
+            alvos = todos(filter(isAliado))
+
+            for i,alvo in enumerate(alvos):
+                
 
     
 
