@@ -5,6 +5,7 @@ from itens import listaArmaduras
 from itens import itemUsavel
 from itens import itemArma
 from itens import itemArmadura
+from listaPersonagens import listaInimigos
 
 class personagemBase:
     nome = str
@@ -14,6 +15,7 @@ class personagemBase:
     forca = int
     agili = int
     sabed = int
+    vivo = bool 
 
 
     def levarDano(self, quant):
@@ -23,8 +25,7 @@ class personagemBase:
         else:
             print(f'golpe incapaiz de danificar {self.nome}')
         if self.vida <= 0:
-            return False #morto
-        return True #vivo
+            self.vivo = False
 
     def curar(self,quant):
         self.vida += quant
@@ -48,6 +49,7 @@ class Heroi(personagemBase):
         self.resis = 3
         self.agili = 3
         self.sabed = 3
+        self.vivo = True
         self.habilidades = []
         self.resis = [0,0,0,0,0,0,0,0]
         self.inventario = []
@@ -95,13 +97,11 @@ class Heroi(personagemBase):
 
 #vida
 
-    def levarDanoHeroi(self, quant, tipo):
-        if self.levarDano(quant -self.calcularRes(tipo)):
+    def levarDanoRes(self, quant, tipo):
+        self.levarDano(quant -self.calcularRes(tipo))
             #adicionar print diferente dependendo da porcentagem da vida 
-            return True
-        else:
-            print("você perde sua força e colapsa")
-            return False
+        if self.vivo == False:
+            print("você perde sua energia e colapsa")
         
     def calcularRes(self, tipo):
         if tipo == 8:
@@ -344,6 +344,42 @@ class Heroi(personagemBase):
                                     case 3:
                                         break
 
+class aliado(personagemBase):
+    a= 1
+
+class inimigo(personagemBase):
+
+    def __init__(self,id:int):
+        #adicionar ia dps se eu quiser
+        for i, ini in enumerate(listaInimigos):
+            if ini["id"] == id:
+                self.nome = ini["nome"] 
+                self.vida = self.vidaMax = ini["vida"]
+                self.resis = ini["resis"]
+                self.forca = ini["forca"]
+                self.agili = ini["agili"]
+                self.sabed = ini["sabed"]
+                self.habilidades = ini["habilidades"]
+                self.drops = ini["drops"]
+                self.ia = ini["ia"] 
+                self.vivo = True
+            
+        
+    
+    def levarDanoRes(self, quant,tipo):
+        self.levarDano(quant - self.calcularRes[tipo])
+        if self.vivo == False:
+            print(f'{self.nome} foi morto')
+
+    def calcularRes(self, tipo):
+        if tipo == 8:
+            return 0
+        return self.resis[tipo]
+    
+
+
+    
+        
 
 
 
