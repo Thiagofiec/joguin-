@@ -368,7 +368,7 @@ class inimigo(personagemBase):
     
     def levarDanoRes(self, quant,tipo):
         self.levarDano(quant - self.calcularRes[tipo])
-        if self.vivo == False:
+        if not self.vivo:
             print(f'{self.nome} foi morto')
 
     def calcularRes(self, tipo):

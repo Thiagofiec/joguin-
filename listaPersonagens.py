@@ -13,7 +13,7 @@ listaInimigos = [
         "forca": 3,
         "agili": 5,
         "sabed": 8,
-        "habilidades": [2,3], #id das habilidades
+        "habilidades": [6,7], #id das habilidades
         "drops": [{0,4},{2,4}], #cat e id
         "ia": 1
     },
