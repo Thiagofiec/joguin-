@@ -34,19 +34,41 @@ def turnoInimigo(perso,todos):
                 alvo = random.randint(0, len(alvos) -1)
 
                 danificar(perso.nome,acao['nome'], alvos[alvo],acao['valor'],acao['tipoDano'], False )
-                match acao['alvo']:
+                match acao['add']:
                     case None:
                         pass
                     case 1:
-                        danificar(perso.nome,acao['nome'],alvos[alvo],acao['valor'],acao['tipoDano'], True)
+                        danificar(perso.nome,acao['nome'],alvos[alvo],acao['addValor'],acao['addTipoDano'], True)
                     #colocar os outros tipos dps: cura, cond e especial
         case 1:
             #ataca alvo que vai ficar com a menor vida 
 
             alvos = [a for a in todos if isAliado(a) and a.vivo]
 
-            for i,alvo in enumerate(alvos):#descobrir que combinação de habilidade e alvo deixa um inimigo com menor vida
-                
+            alvo = 0 
+            acao = 0 
+
+            for iAl,al in enumerate(alvos):#descobrir que combinação de habilidade e alvo deixa um inimigo com menor vida
+                for iAc,ac in enumerate(perso.habilidades):
+                    if al.vida - ac['valor'] <= alvos[alvo] - perso.habilidades[acao]['valor']:
+                        if al.vida - ac['valor'] == alvos[alvo] - perso.habilidades[acao]['valor']:
+                            if random.randint(0,1) > 0:
+                                alvo = iAl
+                                acao = iAc
+                        else:
+                            alvo = iAl
+                            acao = iAc
+
+            acao = perso.habilidades[acao]
+
+            danificar(perso.nome,acao['nome'], alvos[alvo],acao['valor'],acao['tipoDano'], False )
+            match acao['add']:
+                    case None:
+                        pass
+                    case 1:
+                        danificar(perso.nome,acao['nome'],alvos[alvo],acao['addValor'],acao['addTipoDano'], True)
+
+
 
 
 def turnoJogador():

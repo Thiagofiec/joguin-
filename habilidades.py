@@ -34,6 +34,7 @@ ListaHabMonstros = [
         'valor': 15,
         'add': None,
         'addTipo': None,
+        'addTipoDano': None,
         'addValor': None
     },
     {
@@ -45,6 +46,7 @@ ListaHabMonstros = [
         'valor': 15,
         'add': None,
         'addTipo': None,
+        'addTipoDano': None,
         'addValor': None
     },
     {
@@ -56,6 +58,7 @@ ListaHabMonstros = [
         'valor': 15,
         'add': None,
         'addTipo': None,
+        'addTipoDano': None,
         'addValor': None
     },
     {
@@ -67,6 +70,7 @@ ListaHabMonstros = [
         'valor': 15,
         'add': None,
         'addTipo': None,
+        'addTipoDano': None,
         'addValor': None
     },
     {
@@ -78,6 +82,7 @@ ListaHabMonstros = [
         'valor': 15,
         'add': None,
         'addTipo': None,
+        'addTipoDano': None,
         'addValor': None
     },
     {
@@ -89,6 +94,7 @@ ListaHabMonstros = [
         'valor': 15,
         'add': None,
         'addTipo': None,
+        'addTipoDano': None,
         'addValor': None
     },
     {
@@ -100,6 +106,7 @@ ListaHabMonstros = [
         'valor': 15,
         'add': None,
         'addTipo': None,
+        'addTipoDano': None,
         'addValor': None
     },
     {
@@ -111,6 +118,7 @@ ListaHabMonstros = [
         'valor': 15,
         'add': None,
         'addTipo': None,
+        'addTipoDano': None,
         'addValor': None
     },
     {
@@ -122,6 +130,7 @@ ListaHabMonstros = [
         'valor': 15,
         'add': None,
         'addTipo': None,
+        'addTipoDano': None,
         'addValor': None
     },
 
