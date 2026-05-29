@@ -1,4 +1,5 @@
 from habilidades import listaHabilidades
+from habilidades import ListaHabMonstros
 from itens import listaItens
 from itens import listaArmas
 from itens import listaArmaduras
@@ -11,7 +12,7 @@ class personagemBase:
     nome = str
     vidaMax = int
     vida = int
-    resis = int
+    resis = list
     forca = int
     agili = int
     sabed = int
@@ -111,6 +112,14 @@ class Heroi(personagemBase):
             return self.resis[tipo] 
         
         return self.resis[tipo] + self.armadura.res[tipo]
+    
+#combate
+
+    def calcularDano(self):
+        if self.arma:
+            return self.forca + self.arma.dano
+        else:
+            return self.forca
 #inventario
 
     def adiquirirItem(self, cat, id):
@@ -359,7 +368,9 @@ class inimigo(personagemBase):
                 self.forca = ini["forca"]
                 self.agili = ini["agili"]
                 self.sabed = ini["sabed"]
-                self.habilidades = ini["habilidades"]
+                self.habilidades = []
+                for hab in ini['habilidades']:
+                    self.habilidades.append(ListaHabMonstros[hab])
                 self.drops = ini["drops"]
                 self.ia = ini["ia"] 
                 self.vivo = True
@@ -367,7 +378,7 @@ class inimigo(personagemBase):
         
     
     def levarDanoRes(self, quant,tipo):
-        self.levarDano(quant - self.calcularRes[tipo])
+        self.levarDano(quant - self.calcularRes(tipo))
         if not self.vivo:
             print(f'{self.nome} foi morto')
 

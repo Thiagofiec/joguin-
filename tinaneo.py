@@ -132,7 +132,7 @@ while True:
                             print('escolhe um dano de verdade seu trouxa')
                             print()
 
-                if personagem.levarDanoHeroi(dano,danoTipo):
+                if personagem.levarDanoRes(dano,danoTipo):
                     pass
                 else: 
                     break
