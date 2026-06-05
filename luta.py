@@ -4,8 +4,12 @@ from personagens import inimigo
 from personagens import aliado
 
 def batalha(heroi, aliados:list, inimigos:list):
-    while inimigos:
-        todos = [heroi] + aliados + inimigos
+    todos = [heroi] + aliados + inimigos
+    while verificarInimigos(inimigos):
+        if not heroi.vivo:
+            print("derrota")
+            break
+        
         iniciativa = rolarIniciativa(todos)
 
         for i, membro in enumerate(iniciativa):
@@ -13,7 +17,11 @@ def batalha(heroi, aliados:list, inimigos:list):
             input()
             escolherTurno(membro[0],todos)
 
-            #tirar mortos de todos no fim da rodada
+        fimTurno(todos)
+    
+    print("fim do combate")
+    input()
+    #DAR O loot dos inimigos pro jogador
 
 
 def rolarIniciativa(todos:list):
@@ -55,9 +63,10 @@ def turnoInimigo(perso,todos):
             acao = 0 
 
             for iAl,al in enumerate(alvos):#descobrir que combinação de habilidade e alvo deixa um inimigo com menor vida
+                #não esta colocando as resistencia no calculo, consertar
                 for iAc,ac in enumerate(perso.habilidades):
-                    if al.vida - ac['valor'] <= alvos[alvo] - perso.habilidades[acao]['valor']:
-                        if al.vida - ac['valor'] == alvos[alvo] - perso.habilidades[acao]['valor']:
+                    if al.vida - ac['valor'] <= alvos[alvo].vida - perso.habilidades[acao]['valor']:
+                        if al.vida - ac['valor'] == alvos[alvo].vida - perso.habilidades[acao]['valor']:
                             if random.randint(0,1) > 0:
                                 alvo = iAl
                                 acao = iAc
@@ -95,7 +104,7 @@ def turnoJogador(perso, todos):
             else:
                 print('Isso não é uma opção')
                 print()
-        print(acao)
+        
     match acao:
         case 1:
             alvos = [a for a in todos if isInimigo(a) and a.vivo]
@@ -134,6 +143,16 @@ def isInimigo(ini):
 
 def isAliado(ali):
     return isinstance(ali, Heroi) or isinstance(ali,aliado)
+
+def fimTurno(todos):
+    for i,t in enumerate(todos):
+        if not t.vivo:
+            todos.pop(i)
+
+def verificarInimigos(ini):
+    return any(i.vivo for i in ini)
+
+
 
 def danificar(perso,acao,alvo, quant, tipo, isadd:bool):
     if not isadd:

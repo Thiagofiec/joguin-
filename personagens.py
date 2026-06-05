@@ -45,7 +45,7 @@ class Heroi(personagemBase):
 
     def __init__(self,nome, presente, habilidade):
         self.nome = nome
-        self.vidaMax = 100
+        self.vidaMax = 10000
         self.forca = 3
         self.resis = 3
         self.agili = 3

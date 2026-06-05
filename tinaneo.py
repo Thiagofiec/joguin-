@@ -86,7 +86,7 @@ while True:
                     print()
         match opcao:
             case 1:
-                luta.escolherTurno(personagem)
+                personagem.mostrarPersonagem
                 print()
             case 2:
                 while True:
