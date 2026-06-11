@@ -46,8 +46,8 @@ def turnoInimigo(perso,todos):
                 alvos = [a for a in todos if isAliado(a) and a.vivo]
 
                 alvo = random.randint(0, len(alvos) -1)
-
-                danificar(perso.nome,acao['nome'], alvos[alvo],acao['valor'],acao['tipoDano'], False )
+                attr = adicionarAtributo(perso,acao)
+                danificar(perso.nome,acao['nome'], alvos[alvo],acao['valor'] + attr,acao['tipoDano'], False )
                 match acao['add']:
                     case None:
                         pass
@@ -75,8 +75,8 @@ def turnoInimigo(perso,todos):
                             acao = iAc
 
             acao = perso.habilidades[acao]
-
-            danificar(perso.nome,acao['nome'], alvos[alvo],acao['valor'],acao['tipoDano'], False )
+            attr = adicionarAtributo(perso,acao)
+            danificar(perso.nome,acao['nome'], alvos[alvo],acao['valor'] + attr,acao['tipoDano'], False )
             match acao['add']:
                     case None:
                         pass
@@ -152,7 +152,28 @@ def fimTurno(todos):
 def verificarInimigos(ini):
     return any(i.vivo for i in ini)
 
+def adicionarAtributo(perso,acao):
+    attr = acao['attr'][0]
 
+    possiveis = [0,perso.forca,perso.agili,perso.sabed,perso.vida,perso.vidaMax]#talvez coloque resis dps
+
+    attr = possiveis[attr]
+    
+    match acao['attr'][1]:
+        case 0:
+            attr = 0
+        case 1:
+            pass
+        case 2: 
+            attr = abs(attr)
+        case 3:
+            attr = attr * 2
+        case 4:
+            attr = attr / 2
+        case 5:
+            attr = acao['quant'] * attr - acao['quant']
+
+    return attr
 
 def danificar(perso,acao,alvo, quant, tipo, isadd:bool):
     if not isadd:
