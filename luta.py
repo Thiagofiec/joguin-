@@ -4,10 +4,12 @@ from personagens import inimigo
 from personagens import aliado
 
 def batalha(heroi, aliados:list, inimigos:list):
+    derrota = False
     todos = [heroi] + aliados + inimigos
     while verificarInimigos(inimigos):
         if not heroi.vivo:
             print("derrota")
+            derrota = True
             break
         
         iniciativa = rolarIniciativa(todos)
@@ -19,6 +21,18 @@ def batalha(heroi, aliados:list, inimigos:list):
 
         fimTurno(todos)
     
+    if derrota:
+        pass
+    else:
+        for eni in inimigos:
+            for item in eni.drops:
+
+                chance = random.randint(1,100)
+
+                if chance <= item['chance']:
+                    print("item adquirido")
+                    heroi.adiquirirItem(item['cat'],item['id'])
+
     print("fim do combate")
     input()
     #DAR O loot dos inimigos pro jogador

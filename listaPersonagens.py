@@ -14,7 +14,7 @@ listaInimigos = [
         "agili": 5,
         "sabed": 8,
         "habilidades": [6,7], #id das habilidades
-        "drops": [{0,4,5},{2,3,55}], #cat,id e porcentagem
+        "drops": [{'cat':0,'id':4,'chance':5},{'cat':2,'id':3,'chance':55}], #cat,id e porcentagem{
         "ia": 1
     },
     {
@@ -26,7 +26,7 @@ listaInimigos = [
         "agili": 1,
         "sabed": 1,
         "habilidades": [0,5], #id das habilidades
-        "drops": [{1,2,15},{2,1,25}],
+        "drops": [{'cat':1,'id':2,'chance':15},{'cat':2,'id':1,'chance':25}],
         "ia": 0
     }
 ]
