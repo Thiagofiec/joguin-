@@ -65,8 +65,8 @@ def turnoInimigo(perso,todos):
             for iAl,al in enumerate(alvos):#descobrir que combinação de habilidade e alvo deixa um inimigo com menor vida
                 #não esta colocando as resistencia no calculo, consertar
                 for iAc,ac in enumerate(perso.habilidades):
-                    if al.vida - ac['valor'] <= alvos[alvo].vida - perso.habilidades[acao]['valor']:
-                        if al.vida - ac['valor'] == alvos[alvo].vida - perso.habilidades[acao]['valor']:
+                    if al.vida - (ac['valor'] -al.calcularRes(ac['tipoDano'])) <= alvos[alvo].vida - (perso.habilidades[acao]['valor'] - alvos[alvo].calcularRes(perso.habilidades[acao]['tipoDano'])):
+                        if al.vida - (ac['valor'] -al.calcularRes(ac['tipoDano'])) == alvos[alvo].vida - (perso.habilidades[acao]['valor'] - alvos[alvo].calcularRes(perso.habilidades[acao]['tipoDano'])):
                             if random.randint(0,1) > 0:
                                 alvo = iAl
                                 acao = iAc
